@@ -42,6 +42,9 @@ public:
     void begin();
     void end();
     
+    void saveToPhone();
+    string getTempVideoUrl();
+    
     VideoWriter * videoWriter;
     ofFbo fbo;
     ofFbo fboBGRA;

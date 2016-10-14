@@ -144,6 +144,7 @@ void ofxiOSVideoWriter::startRecording() {
     if([videoWriter isTextureCached] == YES) {
         initTextureCache();
     }
+//    cout<<"Starting Rec"<<endl;
 }
 
 void ofxiOSVideoWriter::cancelRecording() {
@@ -164,9 +165,28 @@ void ofxiOSVideoWriter::finishRecording() {
     }
     
     [videoWriter finishRecording];
+    
+    
+    
+    
+//    [videoWriter saveMovieToCameraRoll];
+//    killTextureCache();
+//    cout<<"Finishing"<<endl;
+}
 
+string ofxiOSVideoWriter::getTempVideoUrl(){
+    NSString *url = [videoWriter playVideo];
+    string vidUrl = string([url UTF8String]);
+    cout<<"VIDEO URL=" + vidUrl <<endl;
+    
+    return vidUrl;
+}
+
+void ofxiOSVideoWriter::saveToPhone() {
+    [videoWriter saveMovieToCameraRoll];
     killTextureCache();
 }
+
 
 bool ofxiOSVideoWriter::isRecording() {
     if((videoWriter != nil) &&
@@ -296,12 +316,15 @@ void ofxiOSVideoWriter::end() {
     }
     
     //---------------------------------------------- add sound.
-    for(int i=0; i<videos.size(); i++) {
-        ofxiOSVideoPlayer & video = *videos[i];
-        AVFoundationVideoPlayer * avVideo = (AVFoundationVideoPlayer *)video.getAVFoundationVideoPlayer();
-        BOOL bAudioFrameAdded = [videoWriter addAudio:[avVideo getAudioSampleBuffer]];
-        if(bAudioFrameAdded == YES) {
+//    [videoWriter newAudioSample:sampleBuffer];
+    
+//    for(int i=0; i<videos.size(); i++) {
+//        ofxiOSVideoPlayer & video = *videos[i];
+//        AVFoundationVideoPlayer * avVideo = (AVFoundationVideoPlayer *)video.getAVFoundationVideoPlayer();
+//        BOOL bAudioFrameAdded = [videoWriter addAudio:[avVideo getAudioSampleBuffer]];
+//        if(bAudioFrameAdded == YES) {
             //
-        }
-    }
+//        }
+//    }
+    
 }

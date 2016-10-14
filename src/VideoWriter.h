@@ -31,6 +31,10 @@
 @property(nonatomic, assign) BOOL enableTextureCache;
 @property(nonatomic, assign) BOOL expectsMediaDataInRealTime;
 
+@property(nonatomic, retain) AVCaptureDevice *audioDevice;
+@property(nonatomic, retain) AVCaptureDeviceInput *audioInput;
+@property(nonatomic, retain) AVCaptureSession *_capSession;
+
 - (id)initWithFile:(NSString *)file andVideoSize:(CGSize)size;
 - (id)initWithPath:(NSString *)path andVideoSize:(CGSize)size;
 - (id)initWithURL:(NSURL *)fileURL andVideoSize:(CGSize)size;
@@ -42,11 +46,13 @@
 
 - (BOOL)addFrameAtTime:(CMTime)frameTime;
 - (BOOL)addAudio:(CMSampleBufferRef)audioBuffer;
+- (void)newAudioSample:(CMSampleBufferRef)sampleBuffer;
 
 - (BOOL)isTextureCached;
 - (unsigned int)textureCacheID;
 - (int)textureCacheTarget;
 
 - (void)saveMovieToCameraRoll;
+- (NSString *)playVideo;
 
 @end
