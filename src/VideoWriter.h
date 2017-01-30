@@ -5,6 +5,7 @@
 //
 
 #import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @protocol VideoWriterDelegate <NSObject>
 @optional
@@ -33,7 +34,9 @@
 
 @property(nonatomic, retain) AVCaptureDevice *audioDevice;
 @property(nonatomic, retain) AVCaptureDeviceInput *audioInput;
-@property(nonatomic, retain) AVCaptureSession *_capSession;
+@property(nonatomic, retain) AVCaptureSession *captureSession;
+@property(nonatomic, retain) AVCaptureAudioDataOutput *audioOutput;
+//@property(nonatomic, assign) MPMoviePlayerViewController *moviePlayerViewController;
 
 - (id)initWithFile:(NSString *)file andVideoSize:(CGSize)size;
 - (id)initWithPath:(NSString *)path andVideoSize:(CGSize)size;
