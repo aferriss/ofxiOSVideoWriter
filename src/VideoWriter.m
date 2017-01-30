@@ -145,22 +145,20 @@
     
     
     
-    //--------------------------------------------------------------------------- adding audio input.
+    //--------------------------------------------------------------------------- setup mic capture session
     NSError *micError = nil;
     audioDevice = [AVCaptureDevice defaultDeviceWithMediaType: AVMediaTypeAudio];
     audioInput = [AVCaptureDeviceInput deviceInputWithDevice:audioDevice error:&micError];
     
     audioOutput = [[AVCaptureAudioDataOutput alloc] init];
     
-    //setup cap session for audio
     if(self.captureSession) {
         self.captureSession = nil;
     }
     self.captureSession = [[[AVCaptureSession alloc] init] autorelease];
     
     self.captureSession.sessionPreset = AVCaptureSessionPresetLow;
-//    [self.captureSession beginConfiguration];
-//    [self.captureSession setSessionPreset:AVCaptureSessionPresetLow];
+
     [self.captureSession addInput:audioInput];
     [self.captureSession addOutput:audioOutput];
 
@@ -169,31 +167,7 @@
     dispatch_release(queue);
     
     [self.captureSession startRunning];
-//    AudioChannelLayout acl;
-//    bzero( &acl, sizeof(acl));
-//    acl.mChannelLayoutTag = kAudioChannelLayoutTag_Mono;
-//
-//    
-//    
-//    NSDictionary* audioOutputSettings = [NSDictionary dictionaryWithObjectsAndKeys:
-//                                         [ NSNumber numberWithInt: kAudioFormatMPEG4AAC ], AVFormatIDKey,
-//                                         [ NSNumber numberWithInt: 1 ], AVNumberOfChannelsKey,
-//                                         [ NSNumber numberWithFloat: 44100.0 ], AVSampleRateKey,
-//                                         [ NSNumber numberWithInt: 64000 ], AVEncoderBitRateKey,
-//                                         [ NSData dataWithBytes: &acl length: sizeof( acl ) ], AVChannelLayoutKey,
-//                                         nil];
-//
-//    self.assetWriterAudioInput = [[AVAssetWriterInput
-//                              assetWriterInputWithMediaType: AVMediaTypeAudio
-//                              outputSettings: audioOutputSettings ] retain];
-//
-//    self.assetWriterAudioInput.expectsMediaDataInRealTime = YES;
-//
-//    if([self.assetWriter canAddInput:self.assetWriterAudioInput]){
-//        [self.assetWriter addInput:self.assetWriterAudioInput];
-//    }
-//    
-//    
+
     
     //--------------------------------------------------------------------------- adding video input.
     NSDictionary * videoSettings = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -298,7 +272,8 @@
 }
 
 - (void) disposeAssetWriterAndWriteFile:(BOOL)writeFile {
-    
+
+// not sure if need these or not, seemed to interfere with audio time stamp syncing with video
 //	[self.assetWriterVideoInput markAsFinished];
 //	[self.assetWriterAudioInput markAsFinished];
 	
@@ -437,28 +412,6 @@
 
 
 
--(void) newAudioSample:(CMSampleBufferRef)sampleBuffer
-{
-    if( bWriting )
-    {
-        if( assetWriter.status > AVAssetWriterStatusWriting )
-        {
-            NSLog(@"Warning: writer status is %ld", (long)assetWriter.status);
-            if( assetWriter.status == AVAssetWriterStatusFailed ){
-                NSLog(@"Error: %@", assetWriter.error);
-            }
-            return;
-        }
-        
-        if(self.assetWriter.status == 1){
-//            NSLog(@"Warning: writer status is %ld", (long)assetWriter.status);
-            if( ![assetWriterAudioInput appendSampleBuffer:sampleBuffer] ){
-                NSLog(@"Unable to write to audio input");
-            }
-        }
-    }
-}
-
 - (void)captureOutput:(AVCaptureOutput *)captureOutput
 didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
        fromConnection:(AVCaptureConnection *)connection
@@ -470,11 +423,10 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     
 
     if (bWriting == YES) {
-        if(captureOutput == audioOutput){
+        if(captureOutput == audioOutput){ //double check to make sure this is actually audio
             
-        //lastSampleTime = CMSampleBufferGetPresentationTimeStamp(sampleBuffer);
-            [self addAudio:sampleBuffer];
-         
+            
+            [self addAudio:sampleBuffer]; // this is where the audio gets sent to be recorded
         }
     }
     

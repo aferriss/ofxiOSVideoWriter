@@ -49,7 +49,6 @@
 
 - (BOOL)addFrameAtTime:(CMTime)frameTime;
 - (BOOL)addAudio:(CMSampleBufferRef)audioBuffer;
-- (void)newAudioSample:(CMSampleBufferRef)sampleBuffer;
 
 - (BOOL)isTextureCached;
 - (unsigned int)textureCacheID;
