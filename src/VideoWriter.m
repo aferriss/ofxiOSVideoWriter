@@ -643,7 +643,6 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
     NSString *documentsDirectory = [paths objectAtIndex:0];
     
     NSArray *filePathsArray = [[NSFileManager defaultManager] subpathsOfDirectoryAtPath:documentsDirectory  error:nil];
-    NSLog(@"files array %@", filePathsArray);
     
     NSString *fullpath;
     
@@ -652,15 +651,7 @@ didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer
         fullpath = [documentsDirectory stringByAppendingPathComponent:apath];
         vedioURL =[NSURL fileURLWithPath:fullpath];
     }
-    NSLog(@"vurl %@",vedioURL);
     return vedioURL.absoluteString;
-//    MPMoviePlayerViewController *videoPlayerView = [[MPMoviePlayerViewController alloc] initWithContentURL:vedioURL];
-//    self.moviePlayerViewController = videoPlayerView;
-//    [videoPlayerView release];
-//    
-//    [self presentMoviePlayerViewControllerAnimated:self.moviePlayerViewController];
-//    self.moviePlayerViewController.moviePlayer.movieSourceType = MPMovieSourceTypeFile;
-//    [self.moviePlayerViewController.moviePlayer play];
 }
 
 //---------------------------------------------------------------------------

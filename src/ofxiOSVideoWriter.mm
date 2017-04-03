@@ -165,19 +165,12 @@ void ofxiOSVideoWriter::finishRecording() {
     }
     
     [videoWriter finishRecording];
-    
-    
-    
-    
-//    [videoWriter saveMovieToCameraRoll];
-//    killTextureCache();
-//    cout<<"Finishing"<<endl;
 }
 
 string ofxiOSVideoWriter::getTempVideoUrl(){
     NSString *url = [videoWriter playVideo];
     string vidUrl = string([url UTF8String]);
-    cout<<"VIDEO URL=" + vidUrl <<endl;
+    //cout<<"VIDEO URL=" + vidUrl <<endl;
     
     return vidUrl;
 }
